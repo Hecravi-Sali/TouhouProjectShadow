@@ -13,5 +13,64 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\uniqueidentificationcode">
+      <UniqueIdentifier>{5e93e867-6cff-4c87-abc4-14bdb46495d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\messagereport">
+      <UniqueIdentifier>{1d2859da-9317-4d48-b12a-9faeb13f02fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\generalpurposetype">
+      <UniqueIdentifier>{aada2ca8-f1ff-4ca3-bfd3-590f30320790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\renderableentity">
+      <UniqueIdentifier>{ae075a69-aa8e-4c1d-9908-83c37810aa09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\texture">
+      <UniqueIdentifier>{94d84e52-108f-4eb4-b53c-eb9d5e903b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\texture\stb_image">
+      <UniqueIdentifier>{63992c5f-c449-456e-9428-9217299cce99}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\uniqueidentificationcode\uniqueidentificationcode_intfc.hpp">
+      <Filter>头文件\uniqueidentificationcode</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uniqueidentificationcode\uniqueidentificationcodemanager_intfc.hpp">
+      <Filter>头文件\uniqueidentificationcode</Filter>
+    </ClInclude>
+    <ClInclude Include="include\messagereport\messagereport_intfc.hpp">
+      <Filter>头文件\messagereport</Filter>
+    </ClInclude>
+    <ClInclude Include="include\generalpurposetype\generalpurposetype.hpp">
+      <Filter>头文件\generalpurposetype</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentity_intfc.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\texture\stb_image\stb_image.h">
+      <Filter>头文件\texture\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\texture\texturemanager_2D.hpp">
+      <Filter>头文件\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\texture\texturemanager_intfc.hpp">
+      <Filter>头文件\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentitycontrol_intfc.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentitydraw_intfc.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentityfree.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentitymanager_intfc.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentitymanager.hpp">
+      <Filter>头文件\renderableentity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
