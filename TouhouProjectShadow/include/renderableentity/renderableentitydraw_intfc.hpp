@@ -2,8 +2,8 @@
 #ifndef TPS_RENDERABLEENTITYDRAWINTFC
 #define TPS_RENDERABLEENTITYDRAWINTFC
 
-#include "..//messagereport//messagereport_intfc.hpp"
-#include "..//texture//texturemanager_intfc.hpp"
+#include "../generalpurposetype/generalpurposetype.hpp"
+#include "..//texture/texturemanager_intfc.hpp"
 
 namespace TouhouProjectShadow {
    typedef class RenderableEntityDraw_intfc : public MRI {

@@ -2,7 +2,8 @@
 #ifndef TPS_MESSAGEREPORTINTFC
 #define TPS_MESSAGEREPORTINTFC
 
-#include "..//generalpurposetype/generalpurposetype.hpp"
+#include <string>
+#include <queue>
 
 namespace TouhouProjectShadow {
     typedef class MessageReport_intfc {
@@ -18,7 +19,8 @@ namespace TouhouProjectShadow {
             UnabletoLocate,
             FileSystemI0Fail,
             ParametersUnReasonable,
-            ExecutionConditionsDestroyed
+            ExecutionConditionsDestroyed,
+            ImproperCallSequence
         };
         struct _Message {
             Grade grade;

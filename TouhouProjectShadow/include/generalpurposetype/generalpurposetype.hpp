@@ -2,9 +2,9 @@
 #ifndef TPS_GENERALPURPOSETYPE
 #define TPS_GENERALPURPOSETYPE
 
-#include <string>
+#include <mutex>
+#include <thread>
 #include <vector>
-#include <queue>
 #include <tuple>
 #include <functional>
 #include <limits>
@@ -12,12 +12,15 @@
 
 #include <gl\glew.h>
 
+#include "../messagereport/messagereport_intfc.hpp"
+
 namespace TouhouProjectShadow {
-   //  TODO Mulit Thread lock
 #define MAKE_ENUMCLASS(ECN, ...) enum class ECN { __VA_ARGS__ }; \
    inline std::string const EnumtoString(ECN const &value) { \
+      static std::mutex _lockground;\
       static std::map<ECN, std::string> map; \
       static bool isi = false; \
+      std::lock_guard<std::mutex> lock(_lockground);\
       if(!isi){ \
          isi = true; \
          std::string temp, ecstring = #__VA_ARGS__; \
@@ -67,5 +70,43 @@ namespace TouhouProjectShadow {
          return Vec2f(x - src.x, y - src.y);
       }
    };
+
+   typedef class UniqueIdentificationCode {
+   protected:
+      UniqueIdentificationCode(uint32_t const& id)
+         : _id(id) {
+         ;
+      }
+   public:
+      ~UniqueIdentificationCode(void) = default;
+      UniqueIdentificationCode(UniqueIdentificationCode const& uic)
+         : _id(uic._id) {
+         ;
+      }
+      UniqueIdentificationCode && operator=(
+         UniqueIdentificationCode const& uic) const {
+         return UniqueIdentificationCode(uic._id);
+      }
+      bool operator==(UniqueIdentificationCode const& uic) const {
+         return _id == uic._id;
+      }
+      bool operator<(UniqueIdentificationCode const& uic) const {
+         return _id < uic._id;
+      }
+      static bool GetUIC(UIC& uic) {
+         static std::mutex _lockground;
+         static uint32_t _idcounter = 0;
+         std::lock_guard<std::mutex> lock(_lockground);
+         if (_idcounter < UINT32_MAX) {
+            uic = UIC(_idcounter++);
+            return true;
+         }
+         else {
+            return false;
+         }
+      }
+   private:
+      const uint32_t _id;
+   } UIC;
 }
 #endif // !TPS_GENERALPURPOSETYPE

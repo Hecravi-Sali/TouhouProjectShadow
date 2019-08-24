@@ -2,7 +2,7 @@
 #ifndef TPS_RENDERABLEENTITYCONTROLINTFC
 #define TPS_RENDERABLEENTITYCONTROLINTFC
 
-#include "..//uniqueidentificationcode/uniqueidentificationcode_intfc.hpp"
+#include "../generalpurposetype/generalpurposetype.hpp"
 
 namespace TouhouProjectShadow {
    typedef class RenderableEntityControl_intfc {
@@ -43,7 +43,7 @@ namespace TouhouProjectShadow {
       virtual void SetTCalias(std::string const&) = 0;
       virtual Vec2f GetTexturesize(void) const = 0;
       virtual void SetTexturesize(Vec2f const&) = 0;
-      virtual UICI const GetUIC(void) const = 0;
+      virtual UIC const GetUIC(void) const = 0;
    } RECI;
 }
 #endif // !TPS_RENDERABLEENTITYCONTROLINTFC

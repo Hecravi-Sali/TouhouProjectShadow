@@ -2,7 +2,7 @@
 #ifndef TPS_TEXTUREMANAGERINTFC
 #define TPS_TEXTUREMANAGERINTFC
 
-#include "..//messagereport//messagereport_intfc.hpp"
+#include "../generalpurposetype/generalpurposetype.hpp"
 
 namespace TouhouProjectShadow {
    typedef class TextureManager_intfc : public MRI {
@@ -21,8 +21,10 @@ namespace TouhouProjectShadow {
          std::string textureimagealias;
       } TCRM;
 
-      virtual MRI_Message Register(std::string const& TIalias, TIRM const& tirm) = 0;
-      virtual MRI_Message Register(std::string const& TCalias, TCRM const& tcrm) = 0;
+      virtual MRI_Message Register(
+         std::string const& TIalias, TIRM const& tirm) = 0;
+      virtual MRI_Message Register(
+         std::string const& TCalias, TCRM const& tcrm) = 0;
       virtual TCRM Get(std::string const& TCalias) const = 0;
       virtual MRI_Message Deregister(std::string const& TCalias) = 0;
    } TMI;

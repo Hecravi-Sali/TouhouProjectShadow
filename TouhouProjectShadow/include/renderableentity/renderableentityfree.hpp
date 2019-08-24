@@ -3,7 +3,6 @@
 #define TPS_RENDERABLEENTITYFREEENTITY
 
 #include "renderableentity_intfc.hpp"
-#include "..//uniqueidentificationcode/uniqueidentificationcode_intfc.hpp"
 
 namespace TouhouProjectShadow {
    class RenderableEntityFree : public REI {
@@ -11,7 +10,7 @@ namespace TouhouProjectShadow {
       RenderableEntityFree(void) = delete;
       RenderableEntityFree(RenderableEntityFree const&) = delete;
       RenderableEntityFree operator=(const RenderableEntityFree&) = delete;
-      RenderableEntityFree(TMI::TMIHandle, UICI const&);
+      RenderableEntityFree(TMI::TMIHandle, UIC const&);
       ~RenderableEntityFree(void);
 
       void Config(Attributes const&);
@@ -27,7 +26,7 @@ namespace TouhouProjectShadow {
       void SetTCalias(std::string const&);
       Vec2f GetTexturesize(void) const;
       void SetTexturesize(Vec2f const&);
-      UICI const GetUIC(void) const;
+      UIC const GetUIC(void) const;
 
       MRI_Message Draw(void);
       void Update(float const& timeinterval);

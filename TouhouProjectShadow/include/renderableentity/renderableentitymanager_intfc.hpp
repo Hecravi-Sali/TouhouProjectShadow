@@ -2,9 +2,7 @@
 #ifndef TPS_RENDERABLEENTITYMANAGERINTFC
 #define TPS_RENDERABLEENTITYMANAGERINTFC
 
-#include "..//messagereport//messagereport_intfc.hpp"
-#include "..//uniqueidentificationcode/uniqueidentificationcodemanager_intfc.hpp"
-#include "renderableentitydraw_intfc.hpp"
+#include "../generalpurposetype/generalpurposetype.hpp"
 #include "renderableentitycontrol_intfc.hpp"
 
 namespace TouhouProjectShadow {
@@ -30,7 +28,7 @@ namespace TouhouProjectShadow {
         virtual MRI_Message Create(RECI::RECIHandle &) const = 0;
         virtual MRI_Message Register(EGMP const &, RECI::RECIHandle const&) = 0;
         virtual RECIHL Get(EGMP const &) const = 0;
-        virtual MRI_Message Get(UICI const &, RECI::RECIHandle &) const = 0;
+        virtual MRI_Message Get(UIC const &, RECI::RECIHandle &) const = 0;
         //  Render all entity & Update all entity position
         virtual MRI_Messagequeue Update(const float &timeinterval) = 0;
     } REMI;
