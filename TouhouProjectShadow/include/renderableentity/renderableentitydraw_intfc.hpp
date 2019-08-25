@@ -7,7 +7,7 @@
 
 namespace TouhouProjectShadow {
    typedef class RenderableEntityDraw_intfc : public MRI {
-   public :
+   public:
       virtual ~RenderableEntityDraw_intfc(void) = default;
       typedef RenderableEntityDraw_intfc* REDIHandle;
 

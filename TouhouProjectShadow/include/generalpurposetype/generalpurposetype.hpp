@@ -15,8 +15,9 @@
 #include "../messagereport/messagereport_intfc.hpp"
 
 namespace TouhouProjectShadow {
-#define MAKE_ENUMCLASS(ECN, ...) enum class ECN { __VA_ARGS__ }; \
-   inline std::string const EnumtoString(ECN const &value) { \
+#define MAKE_ENUMCLASS(ECN, ...) \
+   enum class ECN { __VA_ARGS__ }; \
+   inline std::string EnumtoString(ECN const &value) const { \
       static std::mutex _lockground;\
       static std::map<ECN, std::string> map; \
       static bool isi = false; \

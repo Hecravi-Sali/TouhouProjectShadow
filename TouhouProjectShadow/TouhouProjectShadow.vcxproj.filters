@@ -51,9 +51,6 @@
     <ClInclude Include="include\texture\stb_image\stb_image.h">
       <Filter>头文件\texture\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="include\texture\texturemanager_2D.hpp">
-      <Filter>头文件\texture</Filter>
-    </ClInclude>
     <ClInclude Include="include\texture\texturemanager_intfc.hpp">
       <Filter>头文件\texture</Filter>
     </ClInclude>
@@ -63,19 +60,10 @@
     <ClInclude Include="include\renderableentity\renderableentitydraw_intfc.hpp">
       <Filter>头文件\renderableentity</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderableentity\renderableentityfree.hpp">
-      <Filter>头文件\renderableentity</Filter>
-    </ClInclude>
     <ClInclude Include="include\renderableentity\renderableentitymanager_intfc.hpp">
       <Filter>头文件\renderableentity</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderableentity\renderableentitymanager.hpp">
-      <Filter>头文件\renderableentity</Filter>
-    </ClInclude>
     <ClInclude Include="include\texture\textureanimation_intfc.hpp">
-      <Filter>头文件\texture</Filter>
-    </ClInclude>
-    <ClInclude Include="include\texture\textureanimation.hpp">
       <Filter>头文件\texture</Filter>
     </ClInclude>
     <ClInclude Include="include\physicaleffect\physicaleffect_intfc.hpp">
@@ -86,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="include\usercontrolinterface\usercontrolkeyboard_intfc.hpp">
       <Filter>头文件\usercontrolinterface</Filter>
-    </ClInclude>
-    <ClInclude Include="include\physicaleffect\physicaleffectboundary.hpp">
-      <Filter>头文件\physicaleffect</Filter>
     </ClInclude>
     <ClInclude Include="include\eventtrigger\eventtrigger_intfc.hpp">
       <Filter>头文件\eventtrigger</Filter>

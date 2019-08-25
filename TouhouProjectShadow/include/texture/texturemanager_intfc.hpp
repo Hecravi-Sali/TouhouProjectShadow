@@ -10,23 +10,27 @@ namespace TouhouProjectShadow {
       virtual ~TextureManager_intfc(void) = default;
       typedef TextureManager_intfc* TMIHandle;
 
-      typedef struct TextureImageRegistrationMessage {
+      typedef struct TextureImagePreloadingMessage {
          std::string relativePath;
+         //  glTexParameteri(GL_TEXTURE_XD, parameteri.frist, parameteri.secoud);
          std::vector<std::pair<GLint, GLint>> parameteri;
+         //  glTexParameterf(GL_TEXTURE_XD, parameteri.frist, parameteri.secoud);
          std::vector<std::pair<GLint, GLfloat>> parameterf;
-      } TIRM;
+      } TIPM;
 
-      typedef struct TextureCoordinateRegistrationMessage {
-         std::vector<Vec2f> coord;
+      typedef struct TextureCoordmapPreloadingMessage {
+         std::vector<Vec2f> coordmap;
          std::string textureimagealias;
-      } TCRM;
+      } TCPM, TextureCoordmap;
 
-      virtual MRI_Message Register(
-         std::string const& TIalias, TIRM const& tirm) = 0;
-      virtual MRI_Message Register(
-         std::string const& TCalias, TCRM const& tcrm) = 0;
-      virtual TCRM Get(std::string const& TCalias) const = 0;
-      virtual MRI_Message Deregister(std::string const& TCalias) = 0;
+      virtual MRI_Message PreloadTextureImage(
+         std::string const& TIalias, TIPM const&) = 0;
+      virtual MRI_Message PreloadTextoreCoordmap(
+         std::string const& TCalias, TCPM const&) = 0;
+      virtual MRI_Message RegisterTextureCoordmap(
+         UIC const&, std::string const& TCalias) = 0;
+      virtual MRI_Message GetTextureCoordmap(UIC const&, TextureCoordmap&) = 0;
+      virtual std::vector<Vec2f> GetTextureCoord(UIC const&) const = 0;
    } TMI;
 }
 #endif // !TPS_TEXTUREMANAGERINTFC

@@ -145,20 +145,15 @@
     <ClInclude Include="include\eventtrigger\eventtrigger_intfc.hpp" />
     <ClInclude Include="include\generalpurposetype\generalpurposetype.hpp" />
     <ClInclude Include="include\messagereport\messagereport_intfc.hpp" />
-    <ClInclude Include="include\physicaleffect\physicaleffectboundary.hpp" />
     <ClInclude Include="include\physicaleffect\physicaleffectmanager_intfc.hpp" />
     <ClInclude Include="include\physicaleffect\physicaleffect_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitycontrol_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitydraw_intfc.hpp" />
-    <ClInclude Include="include\renderableentity\renderableentityfree.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitygenerate_intfc.hpp" />
-    <ClInclude Include="include\renderableentity\renderableentitymanager.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitymanager_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentity_intfc.hpp" />
     <ClInclude Include="include\texture\stb_image\stb_image.h" />
-    <ClInclude Include="include\texture\textureanimation.hpp" />
     <ClInclude Include="include\texture\textureanimation_intfc.hpp" />
-    <ClInclude Include="include\texture\texturemanager_2D.hpp" />
     <ClInclude Include="include\texture\texturemanager_intfc.hpp" />
     <ClInclude Include="include\usercontrolinterface\usercontrolkeyboard_intfc.hpp" />
   </ItemGroup>
