@@ -12,26 +12,27 @@ namespace TouhouProjectShadow {
       virtual ~TextureAnimation_intfc(void) = default;
       typedef TextureAnimation_intfc* TAIHandle;
 
-      template<typename T>
-      struct AnimationSequence {
-         float usedtime;
-         std::vector<T> sequence;
-      };
-      typedef AnimationSequence<std::string> ASFrame;
-      typedef AnimationSequence<Vec2f> ASTranslation;
+      typedef struct RenderableEntityExecutionSlot {
+         REMI::EGMP::REC renderableentitycamp;
+         MAKE_ENUMCLASS(ExecuteSlotType, ELT,
+            Creat, Running, Destory,
+            Expansion0, Expansion1, Expansion2, Expansion3);
+         ELT executionslottype;
+      } REES;
+      typedef struct AnimationSequence {
+         MAKE_ENUMCLASS(AnimationSequenceType, AST,
+            Frame, Translation, Zoom);
+         AST animationsequencetype;
+         float duration;
+         std::vector<std::string> TCaliasSequence;
+         std::vector<Vec2f> ParameterSequence;
+      } AS;
 
-      //  Texture Animation Execute Type
-      MAKE_ENUMCLASS(TAET, Creat, Running, Destory, Expansion);
-      typedef struct AnimationGroupMarkPair {
-         REMI::EGMP egmp;
-         TAET taet;
-         AnimationSequence<int>* a;
-      } AGMP;
-
-      virtual MRI_Message Register(AGMP const&, ASFrame const&) = 0;
-      virtual MRI_Message Register(AGMP const&, ASTranslation const&) = 0;
-      virtual MRI_Message Execute(AGMP const&, UIC const&) = 0;
-      virtual bool IsFinished(UIC const&) const = 0;
+      virtual MRI_Message PreloadExecutionSlot(
+         REES const&, AS const&) = 0;
+      virtual MRI_Message ExecuteSlot(REES const&, UIC const&) = 0;
+      virtual bool ExecuteSlotIsFinished(
+         REES const&, UIC const&) const = 0;
       virtual MRI_Messagequeue Update(float const& timeinterval) = 0;
    } TAI;
 }

@@ -13,10 +13,31 @@
 #include <gl\glew.h>
 
 #include "../messagereport/messagereport_intfc.hpp"
+/*
+功能：
+用途：
+输入输出：
+ @input
+ @output
+注意事项：
+对类成员函数而言: 函数调用期间对象是否需要保持引用参数, 是否会释放这些参数.
+函数是否分配了必须由调用者释放的空间.
+参数是否可以为空指针.
+是否存在函数使用上的性能隐患.
+如果函数是可重入的, 其同步前提是什么?
+*/
+
+/*
+* Feature：
+
+* This method is equivalent to：
+
+* Precautions：
+*/
 
 namespace TouhouProjectShadow {
-#define MAKE_ENUMCLASS(ECN, ...) \
-   enum class ECN { __VA_ARGS__ }; \
+#define MAKE_ENUMCLASS(ECN, ALIAS, ...) \
+   typedef enum class ECN { __VA_ARGS__ } ALIAS; \
    inline std::string EnumtoString(ECN const &value) const { \
       static std::mutex _lockground;\
       static std::map<ECN, std::string> map; \
