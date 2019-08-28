@@ -14,7 +14,7 @@ namespace TouhouProjectShadow {
    typedef class RenderableEntity_intfc : public RECI, public REDI {
    public:
       virtual ~RenderableEntity_intfc(void) = default;
-      typedef RenderableEntity_intfc* REIHandle;
+      typedef std::shared_ptr<RenderableEntity_intfc> Handle;
    } REI;
 }
 #endif // !TPS_RENDERABLEENTITYINTFC

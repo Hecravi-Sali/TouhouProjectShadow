@@ -15,7 +15,7 @@ namespace TouhouProjectShadow {
    protected:
       virtual ~RenderableEntityControl_intfc(void) = default;
    public:
-      typedef std::weak_ptr<RenderableEntityControl_intfc> Handle;
+      typedef std::shared_ptr<RenderableEntityControl_intfc> Handle;
       /*
        * 属性列表用于一次性通过RECI初始化<可渲染实体>的物理参数
        * @position 可渲染实体 在世界坐标中的位置
@@ -31,7 +31,6 @@ namespace TouhouProjectShadow {
          Vec2f speed;
          float collisionrange;
          std::string TCalias;
-         Vec2f texturesizezoom;
          Attributes(void) {
             position = 0.0;
             speed = 0.0;

@@ -8,18 +8,20 @@ namespace TouhouProjectShadow {
    typedef class PhysicalEffectManager_intfc : public MRI {
    public:
       virtual ~PhysicalEffectManager_intfc(void) = default;
+      typedef std::shared_ptr<PhysicalEffectManager_intfc> Handle;
 
       typedef struct RenderableEntityExecutionSlot {
-         REMI::EGMP::REC basecamp;
+         REMI::REGMP::REC basecamp;
          MAKE_ENUMCLASS(ExecuteSlotType, ELT,
             Boundary, Collision, Gravity, ZoomCollisionRange
          );
          ELT executionslottype;
       } REES;
+
       typedef struct PhysicalEffectRegistrationMessage {
          REES repet;
          PEI::IPL initializationparameterlist;
-         std::vector<REMI::EGMP::REC> objectivecamp;
+         std::vector<REMI::REGMP::REC> objectivecamp;
       } PERM;
 
       virtual MRI_Message Register(PERM const& ipe) = 0;

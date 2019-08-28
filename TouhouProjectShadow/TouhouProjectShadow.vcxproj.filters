@@ -37,6 +37,9 @@
     <Filter Include="头文件\eventtrigger">
       <UniqueIdentifier>{4f002e6c-1cc4-4b1d-b35c-e1f146ad7928}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\texture">
+      <UniqueIdentifier>{dff7e19d-e0e9-4ad5-95ff-892515c49255}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\messagereport\messagereport_intfc.hpp">
@@ -81,5 +84,13 @@
     <ClInclude Include="include\renderableentity\renderableentitygenerate_intfc.hpp">
       <Filter>头文件\renderableentity</Filter>
     </ClInclude>
+    <ClInclude Include="include\texture\texturemanager.hpp">
+      <Filter>头文件\texture</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\texture\texturemanager.cpp">
+      <Filter>源文件\texture</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ namespace TouhouProjectShadow {
     */
    typedef class TextureManager_intfc : public MRI {
    public:
+      typedef std::shared_ptr<TextureManager_intfc> Handle;
       virtual ~TextureManager_intfc(void) = default;
       /*
        * 贴图预加载信息（以下简称TIPM）
@@ -40,7 +41,9 @@ namespace TouhouProjectShadow {
          Vec2f texturesizezoom;
          std::vector<Vec2f> coordmap;
          std::string TIalias;
-      } TCPM, TextureCoordmap;
+      } TCPM;
+      typedef std::shared_ptr<TextureCoordmapPreloadMessage> TextureCoordmapHandle;
+      typedef TextureCoordmapHandle TCHandle;
       /*
        * 预加载贴图文件
        * 通过TIPM加载贴图文件，并为该贴图起一个较短的别名(TIalias)便于调用。
@@ -68,10 +71,7 @@ namespace TouhouProjectShadow {
        * @TMI->GetTextureCoordmap(uic, tcm);
        * ...
        */
-      virtual MRI_Message GetTextureCoordmap(
-         UIC const&, TextureCoordmap&) const = 0;
-      virtual MRI_Message ChangeTextureCoordmap(
-         UIC const&, TextureCoordmap const&) = 0;
+      virtual MRI_Message GetTextureCoordmap(UIC const&, TCHandle&) const = 0;
    } TMI;
 }
 #endif // !TPS_TEXTUREMANAGERINTFC

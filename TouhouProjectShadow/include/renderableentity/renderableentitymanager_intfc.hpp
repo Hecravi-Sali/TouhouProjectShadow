@@ -15,7 +15,7 @@ namespace TouhouProjectShadow {
    typedef class RenderableEntityManager_intfc : public MRI {
    public:
       virtual ~RenderableEntityManager_intfc(void) = default;
-      typedef RenderableEntityManager_intfc* EMIHandle;
+      typedef std::shared_ptr<RenderableEntityManager_intfc> Handle;
 
       typedef struct RenderableEntityGroupMarkPair {
          //  The actual type difference of the entity (stable).

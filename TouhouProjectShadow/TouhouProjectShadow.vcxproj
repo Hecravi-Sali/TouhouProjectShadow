@@ -154,8 +154,12 @@
     <ClInclude Include="include\renderableentity\renderableentity_intfc.hpp" />
     <ClInclude Include="include\texture\stb_image\stb_image.h" />
     <ClInclude Include="include\texture\textureanimation_intfc.hpp" />
+    <ClInclude Include="include\texture\texturemanager.hpp" />
     <ClInclude Include="include\texture\texturemanager_intfc.hpp" />
     <ClInclude Include="include\usercontrolinterface\usercontrolkeyboard_intfc.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\texture\texturemanager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

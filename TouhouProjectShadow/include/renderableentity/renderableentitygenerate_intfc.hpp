@@ -9,7 +9,7 @@ namespace TouhouProjectShadow {
    typedef class RenderableEntityGenerat_intfc : public MRI {
    public:
       virtual ~RenderableEntityGenerat_intfc(void) = default;
-      typedef RenderableEntityGenerat_intfc* REGIHandle;
+      typedef std::shared_ptr<RenderableEntityGenerat_intfc> Handle;
 
       typedef struct GenerateEvent {
          MAKE_ENUMCLASS(GenerateMode, GM,
@@ -24,11 +24,11 @@ namespace TouhouProjectShadow {
             MAKE_ENUMCLASS(MarkPointMode, MPM, entity, fixed);
             MPM markpointmode;
             Vec2f position;
-            REMI::EGMP egmp;
+            REMI::REGMP::REC camp;
          };
          std::vector<MarkPoint> markpointgroup;
 
-         REMI::EGMP::REC generaterenderableentitycamp;
+         REMI::REGMP::REC generate_renderableentitycamp;
          // 属性列表的大小小于生成实体的个数时，多出的生成实体的属性总是与属性列表的最后相同。
          std::vector<RECI::Attributes> attributeslist;
 

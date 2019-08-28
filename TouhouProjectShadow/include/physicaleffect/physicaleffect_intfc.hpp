@@ -10,6 +10,8 @@ namespace TouhouProjectShadow {
    typedef class PhysicalEffect_intfc : public MRI {
    public:
       virtual ~PhysicalEffect_intfc(void) = default;
+      typedef std::shared_ptr<PhysicalEffect_intfc> Handle;
+
       typedef struct InitializationParameterList {
          std::vector<float_t> parameterlist;
       } IPL;
