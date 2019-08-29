@@ -1,0 +1,25 @@
+* TODOList
+** July 
+   | Estimated time  | Task                                      | Recording                                     | Status | Time    |
+   |-----------------+-------------------------------------------+-----------------------------------------------+--------+---------|
+   | 190715 - 190720 | Learn OpenGL2.0, Analyze ECCR0013 project | Finish Learnning. Complete the outline design | done   | 15 - 16 |
+   |                 |                                           | Detailed design & module division             | done   | 17 - 19 |
+   |-----------------+-------------------------------------------+-----------------------------------------------+--------+---------|
+   | 190721 - 190815 | TextureManager                            | Basic                                         | done   | 20 - 22 |
+   |                 |                                           | Animation                                     | idle   |         |
+   |                 | Item                                      | Entity                                        | done   | 22 - 23 |
+   |                 |                                           | Path tracking                                 | idle   |         |
+   |                 |                                           | Particle                                      | done   | 23      |
+   |                 | ItemManager                               | Basic                                         | done   | 24 - 27 |
+   |                 | ItemGenerate                              | Basic                                         | done   | 27 - 30 |
+   |                 |                                           | Vector F2F F2I I2F I2I                        | doing  |         |
+   |                 |                                           | Liner                                         | doing  |         |
+   |                 |                                           | Round                                         | doing  |         |
+   |                 | Simple script                             | Basic                                         | idle   |         |
+   |                 | Control                                   | Basic                                         | done   | 21 - 30 |
+   |                 |                                           | BUG - Key conflict                            | idle   |         |
+   |                 |                                           | Aiming at the target                          | idle   |         |
+   |                 | TimedTask                                 | Basic                                         | idle   |         |
+   |                 | Physical collision                        | Basic                                         | idle   |         |
+   |                 | Sound                                     | Basic                                         | idle   |         |
+   |                 | AI                                        | Basic                                         | idle   |         |

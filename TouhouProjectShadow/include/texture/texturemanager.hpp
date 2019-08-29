@@ -6,22 +6,28 @@
 
 namespace TouhouProjectShadow {
 
-   class TextureManager2D : public TMI {
-   public:
-      TextureManager2D(std::string const& texture_absolutepath);
-      
-      MRI_Message PreloadTextureImage(
-         std::string const& TIalias, TIPM const&) override;
-      MRI_Message PreloadTextureCoordmap(
-         std::string const& TCalias, TCPM const&) override;
-      MRI_Message ReadTextureCoordmap(
-         std::string const& TCalias) const override;
-      MRI_Message Create(UIC const&, std::string const& TCalias) override;
-      MRI_Message Destroy(UIC const&) override;
-      MRI_Message GetTextureCoordmap(UIC const&, TCHandle&) const override;
-   private:
-      class Impl;
-      std::unique_ptr<Impl> pImpl;
-   };
+class TextureManager2D : public TMI {
+public:
+   TextureManager2D(std::string const&&, std::shared_ptr<UNIQUEMUTEX>&);
+   TextureManager2D(TextureManager2D const&) = delete;
+   TextureManager2D operator=(TextureManager2D const&) = delete;
+   TextureManager2D(TextureManager2D&&) noexcept;
+   TextureManager2D& operator=(TextureManager2D&&) = delete;
+
+   virtual MRI_Message PreloadTextureImage(
+         std::string const&& TIalias, TIPM const&&) override;
+   virtual MRI_Message PreloadTextureCoordmap(
+         std::string const&& TCalias, TCPM const&&) override;
+   virtual TCPM&& ReadTextureCoordmap(
+         std::string const&& TCalias) const override;
+   virtual MRI_Message Create(
+         UIC const&&, std::string const&& TCalias) override;
+   virtual MRI_Message Destroy(UIC const&&) override;
+   virtual MRI_Message GetTextureCoordmap(
+         UIC const&&, TCHandle&) const override;
+private:
+   class Impl;
+   std::unique_ptr<Impl> pImpl;
+};
 }
 #endif // !TPS_TEXTUREMANAGER2D
