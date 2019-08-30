@@ -50,20 +50,20 @@ public:
     * 多个TIalias可能映射向同一个贴图文件，避免重复加载。
     */
    virtual MRI_Message PreloadTextureImage(
-      std::string const&& TIalias, TIPM const&&) = 0;
+      std::string const& TIalias, TIPM const&) = 0;
    /*
     * 预加载贴图坐标信息
     * 使用别名(TCalias)绑定TCPM便于调用。
     */
    virtual MRI_Message PreloadTextureCoordmap(
-         std::string const&& TCalias, TCPM const&&) = 0;
+         std::string const& TCalias, TCPM const&) = 0;
    virtual TCPM&& ReadTextureCoordmap(
-         std::string const&& TCalias) const = 0;
+         std::string const& TCalias) const = 0;
    /*
     * 根据UIC和<预加载贴图坐标信息>的别名创建贴图坐标映射
     */
-   virtual MRI_Message Create(UIC const&&, std::string const&& TCalias) = 0;
-   virtual MRI_Message Destroy(UIC const&&) = 0;
+   virtual MRI_Message Create(UIC const&, std::string const& TCalias) = 0;
+   virtual MRI_Message Destroy(UIC const&) = 0;
    /*
     * 根据UIC获取 贴图映射
     * TextureAnimation 类需要对 贴图映射 进行操作。
@@ -71,7 +71,9 @@ public:
     * @TMI->GetTextureCoordmap(uic, tcm);
     * ...
     */
-   virtual MRI_Message GetTextureCoordmap(UIC const&&, TCHandle&) const = 0;
+   virtual MRI_Message GetTextureCoordmap(UIC const&, TCHandle&) const = 0;
+   virtual std::weak_ptr<GLuint> GetTextureID(
+      std::string const& TIalias) const = 0;
 } TMI;
 }
 #endif // !TPS_TEXTUREMANAGERINTFC

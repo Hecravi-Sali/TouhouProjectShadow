@@ -67,9 +67,8 @@ namespace TouhouProjectShadow {
       } AS;
 
       virtual MRI_Message PreloadExecutionSlot(REES const&, AS const&) = 0;
-      virtual MRI_Message ExecuteSlot(REES const&, RECI::Handle const&) = 0;
+      virtual MRI_Message ExecuteSlot(REES const&, UIC const&) = 0;
       virtual bool ExecuteSlotIsFinished(REES const&, UIC const&) const = 0;
-
       virtual MRI_Messagequeue Update(float const& timeinterval) = 0;
    } TAI;
 }

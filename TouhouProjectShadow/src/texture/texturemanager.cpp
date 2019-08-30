@@ -9,7 +9,7 @@ public:
    std::string const _textureabsolutepath;
    std::shared_ptr<UNIQUEMUTEX> _OpenGLContextLock;
    RWMUTEX _sync_AT;
-   std::map<std::string, GLuint> _absolutepath_textureid;
+   std::map<std::string, std::shared_ptr<GLuint>> _absolutepath_textureid;
    RWMUTEX _sync_TA;
    std::map<std::string, std::string> _TIalias_absolutepath;
    RWMUTEX _sync_TCPM;
@@ -35,14 +35,19 @@ public:
          SYNCBLOCK_RW_UNIQUELOCK(_sync_AT);
          for (auto i = _absolutepath_textureid.begin(); 
                i != _absolutepath_textureid.end(); ) {
-            glDeleteTextures(1, &(*i).second);
+            GLuint moveid = *((*i).second);
+            std::weak_ptr<GLuint> isout((*i).second);
+            (*i).second.reset();
+            while (isout.use_count() != 0)
+               ;
+            glDeleteTextures(1, &moveid);
             i = _absolutepath_textureid.erase(i);
          }
       }
    }
 
    MRI_Message PreloadTextureImage(
-         std::string const&& alias, TIPM const&& tipm) {
+         std::string const& alias, TIPM const& tipm) {
       MRI_CreatMessage(re);
       std::string path = _textureabsolutepath + "/" + tipm.relativePath;
       bool TIalias_noused;
@@ -68,12 +73,17 @@ public:
                   path.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
             }
             if (imagedata != nullptr) {
-               GLuint textureid;
+               std::shared_ptr<GLuint> textureid = 
+                  std::make_shared<GLuint>();
                if (_OpenGLContextLock != nullptr) {
                   {
                      SYNCBLOCK_LOCK(*_OpenGLContextLock);
-                     glGenTextures(1, &textureid);
-                     glBindTexture(GL_TEXTURE_2D, textureid);
+                     {
+                        GLuint temp = 123;
+                        glGenTextures(1, &temp);
+                        (*textureid) = temp;
+                     }
+                     glBindTexture(GL_TEXTURE_2D, *(textureid));
                      for (auto const i : tipm.parameteri) {
                         glTexParameteri(GL_TEXTURE_2D, i.first, i.second);
                      }
@@ -127,7 +137,7 @@ public:
    }
 
    MRI_Message PreloadTextureCoordmap(
-         std::string const&& alias, TCPM const&& tcpm) {
+         std::string const& alias, TCPM const& tcpm) {
       MRI_CreatMessage(re);
       bool findTCPM;
       {
@@ -148,7 +158,7 @@ public:
       MRI_Retrun(re);
    }
 
-   TCPM&& ReadTextureCoordmap(std::string const&& TCalias) {
+   TCPM&& ReadTextureCoordmap(std::string const& TCalias) {
       TCPM re;
       {
          SYNCBLOCK_RW_SHAREDLOCK(_sync_TCPM);
@@ -160,7 +170,7 @@ public:
       return std::move(re);
    }
 
-   MRI_Message Create(UIC const&& uic, std::string const&& TCalias) {
+   MRI_Message Create(UIC const& uic, std::string const& TCalias) {
       MRI_CreatMessage(re);
       bool UIC_notcreated;
       {
@@ -190,7 +200,7 @@ public:
       MRI_Retrun(re);
    }
 
-   MRI_Message Destroy(UIC const&& uic) {
+   MRI_Message Destroy(UIC const& uic) {
       MRI_CreatMessage(re);
       bool findUIC;
       {
@@ -213,7 +223,7 @@ public:
       MRI_Retrun(re);
    }
 
-   MRI_Message GetTextureCoordmap(UIC const&& uic, TCHandle& tch) {
+   MRI_Message GetTextureCoordmap(UIC const& uic, TCHandle& tch) {
       MRI_CreatMessage(re);
       bool findUIC;
       {
@@ -235,12 +245,23 @@ public:
       }
       MRI_Retrun(re);
    }
+
+   std::weak_ptr<GLuint> GetTextureID(std::string const& TIalias) {
+      std::weak_ptr<GLuint> re;
+      {
+         SYNCBLOCK_RW_SHAREDLOCK(_sync_AT);
+         auto finditerator = _absolutepath_textureid.find(TIalias);
+         if (finditerator != _absolutepath_textureid.end()) {
+            re = (*finditerator).second;
+         }
+      }
+      return re;
+   }
 };
 
 TextureManager2D::TextureManager2D(
-      std::string const&& dir, std::shared_ptr<UNIQUEMUTEX>& lock){
-   pImpl = std::make_unique<Impl>(
-      std::forward<std::string const>(dir), lock);
+      std::string const& dir, std::shared_ptr<UNIQUEMUTEX>& lock){
+   pImpl = std::make_unique<Impl>(dir, lock);
 }
 
 TextureManager2D::TextureManager2D(TextureManager2D&& tm) noexcept {
@@ -248,37 +269,35 @@ TextureManager2D::TextureManager2D(TextureManager2D&& tm) noexcept {
 }
 
 MRI_Message TextureManager2D::PreloadTextureImage(
-      std::string const&& TIalias, TIPM const&& tipm) {
-   return pImpl->PreloadTextureImage(
-      std::forward<std::string const>(TIalias),
-      std::forward<TIPM const>(tipm));
+      std::string const& TIalias, TIPM const& tipm) {
+   return pImpl->PreloadTextureImage(TIalias, tipm);
 }
 
 MRI_Message TextureManager2D::PreloadTextureCoordmap(
-      std::string const&& TCalias, TCPM const&& tcpm) {
-   return pImpl->PreloadTextureCoordmap(
-      std::forward<std::string const>(TCalias),
-      std::forward<TCPM const>(tcpm));
+      std::string const& TCalias, TCPM const& tcpm) {
+   return pImpl->PreloadTextureCoordmap(TCalias, tcpm);
 }
 
 TMI::TCPM&& TextureManager2D::ReadTextureCoordmap(
-      std::string const&& TCalias) const {
-   return pImpl->ReadTextureCoordmap(std::forward<std::string const>(TCalias));
+      std::string const& TCalias) const {
+   return pImpl->ReadTextureCoordmap(TCalias);
 }
 
 MRI_Message TextureManager2D::Create(
-      UIC const&& uic, std::string const&& TCalias){
-   return pImpl->Create(
-      std::forward<UIC const>(uic), 
-      std::forward<std::string const>(TCalias));
+      UIC const& uic, std::string const& TCalias){
+   return pImpl->Create(uic, TCalias);
 }
 
-MRI_Message TextureManager2D::Destroy(UIC const&& uic) {
-   return pImpl->Destroy(std::forward<UIC const>(uic));
+MRI_Message TextureManager2D::Destroy(UIC const& uic) {
+   return pImpl->Destroy(uic);
 }
 
 MRI_Message TextureManager2D::GetTextureCoordmap(
-      UIC const&& uic, TCHandle& tch) const {
-   return pImpl->GetTextureCoordmap(std::forward<UIC const>(uic), tch);
+      UIC const& uic, TCHandle& tch) const {
+   return pImpl->GetTextureCoordmap(uic, tch);
+}
+std::weak_ptr<GLuint> TextureManager2D::GetTextureID(
+      std::string const& TIalias) const {
+   return pImpl->GetTextureID(TIalias);
 }
 }
