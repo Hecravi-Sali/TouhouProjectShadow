@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TPSTEXTUREANIMATIONINTFC
-#define TPSTEXTUREANIMATIONINTFC
+#ifndef TPS_TEXTUREANIMATIONINTFC
+#define TPS_TEXTUREANIMATIONINTFC
 
 #include "../generalpurposetype/generalpurposetype.hpp"
 #include "../renderableentity/renderableentitymanager_intfc.hpp"
@@ -28,6 +28,18 @@ namespace TouhouProjectShadow {
             Creat, Running, Destory,
             Expansion0, Expansion1, Expansion2, Expansion3);
          ELT executionslottype;
+
+         bool operator<(RenderableEntityExecutionSlot const& r) const {
+            return 
+               (renderableentitycamp < r.renderableentitycamp) || 
+                  ((renderableentitycamp == r.renderableentitycamp &&
+                    executionslottype < r.executionslottype));
+         }
+
+         std::string to_string(void) const {
+            return "<" + REMI::REGMP::EnumtoString(renderableentitycamp) +
+               ", " + EnumtoString(executionslottype) + ">";
+         }
       } REES;
       /*
        * 贴图动画序列
@@ -58,7 +70,7 @@ namespace TouhouProjectShadow {
           * 在平移动画模式下，@ParameterSequence中的参数作为向量，将UIC指向的<贴图
           *    坐标映射>中的<coordmap>整体向向量所指的方向平移，移动轨迹是一条直线，
           *    如果参数不唯一，那么将会移动出一条折线，贴图的运动速度是固定的。
-          * 在缩放动画模式下，第一个参数将作为贴图动画完成缩放后的值，其他参数忽略。
+          * 在缩放动画模式下，第一个参数将作为贴图动画完成缩放的值，第二个参数作为时间。
           *
           * 如果在平移动画模式和缩放动画模式下参数列表的大小为0，则认为动画无效，不会
           * 产生动画效果。
@@ -66,10 +78,24 @@ namespace TouhouProjectShadow {
          std::vector<Vec2f> ParameterSequence;
       } AS;
 
+      typedef struct AnimationExecutionMark {
+         UIC uic;
+         REES rees;
+         bool operator<(AnimationExecutionMark const& r) const {
+            return uic < r.uic ||
+               (uic == r.uic && (rees < r.rees));
+         }
+         std::string to_string(void) const {
+            return "animation execution mark UIC: " +
+               uic.to_string() + "execution slot: " + rees.to_string();
+         }
+      } AEM;
+
       virtual MRI_Message PreloadExecutionSlot(REES const&, AS const&) = 0;
-      virtual MRI_Message ExecuteSlot(REES const&, UIC const&) = 0;
-      virtual bool ExecuteSlotIsFinished(REES const&, UIC const&) const = 0;
+      virtual AnimationSequence ReadExecutionSlot(REES const&) = 0;
+      virtual MRI_Message ExecuteSlot(AEM const&) = 0;
+      virtual bool ExecuteSlotIsFinished(AEM const&) const = 0;
       virtual MRI_Messagequeue Update(float const& timeinterval) = 0;
    } TAI;
 }
-#endif // !TPSTEXTUREANIMATIONINTFC
+#endif // !TPS_TEXTUREANIMATIONINTFC

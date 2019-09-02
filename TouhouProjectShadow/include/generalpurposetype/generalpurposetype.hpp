@@ -36,6 +36,11 @@ public:
       double const& a, double const& b) {
       x = static_cast<float>(a), y = static_cast<float>(b);
    }
+   void operator+(
+      TwoDimensionalVectorofFloatingPointType const& val) {
+      x += val.x;
+      y += val.y;
+   }
    void operator=(double const& val) {
       x = y = static_cast<float>(val);
    }
@@ -116,5 +121,24 @@ private:
 #define SYNCBLOCK_LOCK(mutexname) \
    std::lock_guard<std::mutex> _uniquelock(mutexname);
 
+#define EXPANSIONIMPL_1_CONST(classname, returnvaluetype, functionname, parameter0) \
+   returnvaluetype classname::functionname(parameter0 temp0) const { \
+      MRI_Retrun_RV(pImpl->functionname(temp0)) \
+   }
+
+#define EXPANSIONIMPL_2_CONST(classname, returnvaluetype, functionname, parameter0, parameter1) \
+   returnvaluetype classname::functionname(parameter0 temp0, parameter1 temp1) const { \
+      MRI_Retrun_RV(pImpl->functionname(temp0, temp1)) \
+   }
+
+#define EXPANSIONIMPL_1(classname, returnvaluetype, functionname, parameter0) \
+   returnvaluetype classname::functionname(parameter0 temp0) { \
+      MRI_Retrun_RV(pImpl->functionname(temp0)) \
+   }
+
+#define EXPANSIONIMPL_2(classname, returnvaluetype, functionname, parameter0, parameter1) \
+   returnvaluetype classname::functionname(parameter0 temp0, parameter1 temp1) { \
+      MRI_Retrun_RV(pImpl->functionname(temp0, temp1)) \
+   }
 }
 #endif // !TPS_GENERALPURPOSETYPE

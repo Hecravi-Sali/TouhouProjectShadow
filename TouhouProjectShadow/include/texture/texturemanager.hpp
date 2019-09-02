@@ -17,15 +17,15 @@ public:
          std::string const& TIalias, TIPM const&) override;
    virtual MRI_Message PreloadTextureCoordmap(
          std::string const& TCalias, TCPM const&) override;
-   virtual TCPM&& ReadTextureCoordmap(
+   virtual TCPM ReadTextureCoordmap(
          std::string const& TCalias) const override;
    virtual MRI_Message Create(
          UIC const&, std::string const& TCalias) override;
    virtual MRI_Message Destroy(UIC const&) override;
-   virtual MRI_Message GetTextureCoordmap(
-         UIC const&, TCHandle&) const override;
-   std::weak_ptr<GLuint> GetTextureID(
-      std::string const& TIalias) const override;
+   virtual TCPM Get(UIC const&) const override;
+   virtual MRI_Message Set(UIC const&, TCPM const&) override;
+   std::weak_ptr<GLuint> Get(
+std::string const& TIalias) const override;
 private:
    class Impl;
    std::unique_ptr<Impl> pImpl;

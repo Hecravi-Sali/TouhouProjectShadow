@@ -87,9 +87,15 @@
     <ClInclude Include="include\texture\texturemanager.hpp">
       <Filter>include\texture</Filter>
     </ClInclude>
+    <ClInclude Include="include\texture\textureanimation.hpp">
+      <Filter>include\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\texture\texturemanager.cpp">
+      <Filter>src\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\textureanimation.cpp">
       <Filter>src\texture</Filter>
     </ClCompile>
   </ItemGroup>

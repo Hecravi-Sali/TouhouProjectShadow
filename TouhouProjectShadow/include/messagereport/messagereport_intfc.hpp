@@ -23,7 +23,7 @@ namespace TouhouProjectShadow {
  */
 #define MAKE_ENUMCLASS(ECN, ALIAS, ...) \
    typedef enum class ECN { __VA_ARGS__ } ALIAS; \
-   std::string EnumtoString(ECN const &value) const { \
+   static std::string EnumtoString(ECN const &value) { \
       static std::mutex _lockground;\
       static std::map<ECN, std::string> map; \
       static bool isi = false; \
@@ -189,8 +189,8 @@ public:
 #ifndef MRI_CLOSEMESSAGE
 #define MRI_PushMessageInQueue_Creat(stack, grade, code, str) \
         stack.push({ \
-            ErrorReport_intfc::MRG::grade, \
-            ErrorReport_intfc::MRC::code, \
+            MessageReport_intfc::MRG::grade, \
+            MessageReport_intfc::MRC::code, \
             (str)});
 #else
 #define MRI_PushMessageInQueue_Creat(stack, grade, code, str)

@@ -21,7 +21,6 @@ public:
       :_textureabsolutepath(dir), _OpenGLContextLock(openglc){
       ;
    }
-
    ~Impl(void) {
       {
          SYNCBLOCK_RW_UNIQUELOCK(_sync_UT);
@@ -45,7 +44,6 @@ public:
          }
       }
    }
-
    MRI_Message PreloadTextureImage(
          std::string const& alias, TIPM const& tipm) {
       MRI_CreatMessage(re);
@@ -135,7 +133,6 @@ public:
       }
       MRI_Retrun(re);
    }
-
    MRI_Message PreloadTextureCoordmap(
          std::string const& alias, TCPM const& tcpm) {
       MRI_CreatMessage(re);
@@ -157,8 +154,7 @@ public:
       }
       MRI_Retrun(re);
    }
-
-   TCPM&& ReadTextureCoordmap(std::string const& TCalias) {
+   TCPM ReadTextureCoordmap(std::string const& TCalias) {
       TCPM re;
       {
          SYNCBLOCK_RW_SHAREDLOCK(_sync_TCPM);
@@ -169,7 +165,6 @@ public:
       }
       return std::move(re);
    }
-
    MRI_Message Create(UIC const& uic, std::string const& TCalias) {
       MRI_CreatMessage(re);
       bool UIC_notcreated;
@@ -199,7 +194,6 @@ public:
       }
       MRI_Retrun(re);
    }
-
    MRI_Message Destroy(UIC const& uic) {
       MRI_CreatMessage(re);
       bool findUIC;
@@ -222,35 +216,55 @@ public:
       }
       MRI_Retrun(re);
    }
-
-   MRI_Message GetTextureCoordmap(UIC const& uic, TCHandle& tch) {
-      MRI_CreatMessage(re);
-      bool findUIC;
+   TCPM Get(UIC const& uic) {
+      TCPM re;
       {
          SYNCBLOCK_RW_SHAREDLOCK(_sync_UT);
          auto findUICiterator = _UIC_TC.find(uic);
          if (findUICiterator != _UIC_TC.end()) {
-            tch = (*findUICiterator).second;
-            findUIC = true;
-         }
-         else {
-            findUIC = false;
+            re = (*(*findUICiterator).second);
          }
       }
-      if (findUIC) {
-         MRI_SetMessage(re, Info, None, "Successful to get TCHandle of UIC:<" + uic.to_string() + ">");
+      return re;
+   }
+   MRI_Message Set(UIC const& uic, TCPM const& tcpm) {
+      MRI_CreatMessage(re);
+      bool setUIC = false;
+      {
+         SYNCBLOCK_RW_SHAREDLOCK(_sync_UT);
+         auto findUICiterator = _UIC_TC.find(uic);
+         if (findUICiterator != _UIC_TC.end()) {
+            setUIC = true;
+            (*(*findUICiterator).second) = tcpm;
+         }
+      }
+#ifndef MRI_CLOSEMESSAGE
+      if (setUIC) {
+         MRI_SetMessage(re, Info, None,
+            "Successful to Set UIC: " +
+            uic.to_string() + " texture coord map");
       }
       else {
-         MRI_SetMessage(re, Info, None, "Fail to get TCHandle of UIC:<" + uic.to_string() + ">")
+         MRI_SetMessage(re, Info, None,
+            "Texture coord map UIC: " +
+            uic.to_string() + " maybe have been destory or not created");
       }
+#endif
       MRI_Retrun(re);
    }
-
-   std::weak_ptr<GLuint> GetTextureID(std::string const& TIalias) {
+   std::weak_ptr<GLuint> Get(std::string const& TIalias) {
       std::weak_ptr<GLuint> re;
+      std::string TIabsolutepath;
+      {
+         SYNCBLOCK_RW_SHAREDLOCK(_sync_TA);
+         auto finditerator = _TIalias_absolutepath.find(TIalias);
+         if (finditerator != _TIalias_absolutepath.end()) {
+            TIabsolutepath = (*finditerator).second;
+         }
+      }
       {
          SYNCBLOCK_RW_SHAREDLOCK(_sync_AT);
-         auto finditerator = _absolutepath_textureid.find(TIalias);
+         auto finditerator = _absolutepath_textureid.find(TIabsolutepath);
          if (finditerator != _absolutepath_textureid.end()) {
             re = (*finditerator).second;
          }
@@ -263,41 +277,16 @@ TextureManager2D::TextureManager2D(
       std::string const& dir, std::shared_ptr<UNIQUEMUTEX>& lock){
    pImpl = std::make_unique<Impl>(dir, lock);
 }
-
 TextureManager2D::TextureManager2D(TextureManager2D&& tm) noexcept {
    pImpl = std::move(tm.pImpl);
 }
 
-MRI_Message TextureManager2D::PreloadTextureImage(
-      std::string const& TIalias, TIPM const& tipm) {
-   return pImpl->PreloadTextureImage(TIalias, tipm);
-}
-
-MRI_Message TextureManager2D::PreloadTextureCoordmap(
-      std::string const& TCalias, TCPM const& tcpm) {
-   return pImpl->PreloadTextureCoordmap(TCalias, tcpm);
-}
-
-TMI::TCPM&& TextureManager2D::ReadTextureCoordmap(
-      std::string const& TCalias) const {
-   return pImpl->ReadTextureCoordmap(TCalias);
-}
-
-MRI_Message TextureManager2D::Create(
-      UIC const& uic, std::string const& TCalias){
-   return pImpl->Create(uic, TCalias);
-}
-
-MRI_Message TextureManager2D::Destroy(UIC const& uic) {
-   return pImpl->Destroy(uic);
-}
-
-MRI_Message TextureManager2D::GetTextureCoordmap(
-      UIC const& uic, TCHandle& tch) const {
-   return pImpl->GetTextureCoordmap(uic, tch);
-}
-std::weak_ptr<GLuint> TextureManager2D::GetTextureID(
-      std::string const& TIalias) const {
-   return pImpl->GetTextureID(TIalias);
-}
+EXPANSIONIMPL_2(TextureManager2D, MRI_Message, PreloadTextureImage, std::string const&, TIPM const&);
+EXPANSIONIMPL_2(TextureManager2D, MRI_Message, PreloadTextureCoordmap, std::string const&, TCPM const&);
+EXPANSIONIMPL_1_CONST(TextureManager2D, TMI::TCPM, ReadTextureCoordmap, std::string const&);
+EXPANSIONIMPL_2(TextureManager2D, MRI_Message, Create, UIC const&, std::string const&);
+EXPANSIONIMPL_1(TextureManager2D, MRI_Message, Destroy, UIC const&);
+EXPANSIONIMPL_1_CONST(TextureManager2D, TextureManager2D::TCPM, Get, UIC const&);
+EXPANSIONIMPL_2(TextureManager2D, MRI_Message, Set, UIC const&, TCPM const&);
+EXPANSIONIMPL_1_CONST(TextureManager2D, std::weak_ptr<GLuint>, Get, std::string const&);
 }

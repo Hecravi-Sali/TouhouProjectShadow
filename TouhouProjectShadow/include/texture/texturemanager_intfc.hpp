@@ -41,6 +41,9 @@ public:
       Vec2f texturesizezoom;
       std::vector<Vec2f> coordmap;
       std::string TIalias;
+      TextureCoordmapPreloadMessage(void) {
+         texturesizezoom = 0;
+      }
    } TCPM;
    typedef std::shared_ptr<TextureCoordmapPreloadMessage> TextureCoordmapHandle;
    typedef TextureCoordmapHandle TCHandle;
@@ -57,7 +60,7 @@ public:
     */
    virtual MRI_Message PreloadTextureCoordmap(
          std::string const& TCalias, TCPM const&) = 0;
-   virtual TCPM&& ReadTextureCoordmap(
+   virtual TCPM ReadTextureCoordmap(
          std::string const& TCalias) const = 0;
    /*
     * 根据UIC和<预加载贴图坐标信息>的别名创建贴图坐标映射
@@ -71,9 +74,9 @@ public:
     * @TMI->GetTextureCoordmap(uic, tcm);
     * ...
     */
-   virtual MRI_Message GetTextureCoordmap(UIC const&, TCHandle&) const = 0;
-   virtual std::weak_ptr<GLuint> GetTextureID(
-      std::string const& TIalias) const = 0;
+   virtual TCPM Get(UIC const&) const = 0;
+   virtual MRI_Message Set(UIC const&, TCPM const&) = 0;
+   virtual std::weak_ptr<GLuint> Get(std::string const& TIalias) const = 0;
 } TMI;
 }
 #endif // !TPS_TEXTUREMANAGERINTFC
