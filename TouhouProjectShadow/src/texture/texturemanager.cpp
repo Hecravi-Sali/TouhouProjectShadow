@@ -5,7 +5,7 @@
 
 namespace TouhouProjectShadow {
 class TextureManager2D::Impl {
-public:
+private:
    std::string const _textureabsolutepath;
    std::shared_ptr<UNIQUEMUTEX> _OpenGLContextLock;
    RWMUTEX _sync_AT;
@@ -16,10 +16,10 @@ public:
    std::map<std::string, TCPM> _preloadTCPM;
    RWMUTEX _sync_UT;
    std::map<UIC, TCHandle> _UIC_TC;
-
+public:
    Impl(std::string const& dir, std::shared_ptr<UNIQUEMUTEX>& openglc)
-      :_textureabsolutepath(dir), _OpenGLContextLock(openglc){
-      ;
+      :_textureabsolutepath(dir) {
+      _OpenGLContextLock = openglc;
    }
    ~Impl(void) {
       {
@@ -29,7 +29,7 @@ public:
             i = _UIC_TC.erase(i);
          }
       }
-      if (_OpenGLContextLock != nullptr) {
+      {
          SYNCBLOCK_LOCK(*_OpenGLContextLock);
          SYNCBLOCK_RW_UNIQUELOCK(_sync_AT);
          for (auto i = _absolutepath_textureid.begin(); 
@@ -73,45 +73,38 @@ public:
             if (imagedata != nullptr) {
                std::shared_ptr<GLuint> textureid = 
                   std::make_shared<GLuint>();
-               if (_OpenGLContextLock != nullptr) {
+               {
+                  SYNCBLOCK_LOCK(*_OpenGLContextLock);
                   {
-                     SYNCBLOCK_LOCK(*_OpenGLContextLock);
-                     {
-                        GLuint temp = 123;
-                        glGenTextures(1, &temp);
-                        (*textureid) = temp;
-                     }
-                     glBindTexture(GL_TEXTURE_2D, *(textureid));
-                     for (auto const i : tipm.parameteri) {
-                        glTexParameteri(GL_TEXTURE_2D, i.first, i.second);
-                     }
-                     for (auto const i : tipm.parameterf) {
-                        glTexParameterf(GL_TEXTURE_2D, i.first, i.second);
-                     }
-                     glTexImage2D(
-                        GL_TEXTURE_2D, 0, GL_RGBA,
-                        width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                        imagedata);
-                     glGenerateMipmap(GL_TEXTURE_2D);
+                     GLuint temp = 123;
+                     glGenTextures(1, &temp);
+                     (*textureid) = temp;
                   }
-
-                  //  stbi_image_free -> free(imagedata); No need to sync
-                  stbi_image_free(imagedata);
-                  {
-                     SYNCBLOCK_RW_UNIQUELOCK(_sync_AT);
-                     _absolutepath_textureid[path] = textureid;
+                  glBindTexture(GL_TEXTURE_2D, *(textureid));
+                  for (auto const i : tipm.parameteri) {
+                     glTexParameteri(GL_TEXTURE_2D, i.first, i.second);
                   }
-                  {
-                     SYNCBLOCK_RW_UNIQUELOCK(_sync_TA);
-                     _TIalias_absolutepath[alias] = path;
+                  for (auto const i : tipm.parameterf) {
+                     glTexParameterf(GL_TEXTURE_2D, i.first, i.second);
                   }
-                  MRI_SetMessage(re, Info, None,
-                     "Successful to preload texture image file <TIPM>:<" + path + ">, TIPM Alias is:<" + alias + ">");
+                  glTexImage2D(
+                     GL_TEXTURE_2D, 0, GL_RGBA,
+                     width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                     imagedata);
+                  glGenerateMipmap(GL_TEXTURE_2D);
                }
-               else {
-                  MRI_SetMessage(re, Error, ExecutionConditionsDestroyed,
-                     "Can't Lock OpenGL contex!");
+               //  stbi_image_free -> free(imagedata); No need to sync
+               stbi_image_free(imagedata);
+               {
+                  SYNCBLOCK_RW_UNIQUELOCK(_sync_AT);
+                  _absolutepath_textureid[path] = textureid;
                }
+               {
+                  SYNCBLOCK_RW_UNIQUELOCK(_sync_TA);
+                  _TIalias_absolutepath[alias] = path;
+               }
+               MRI_SetMessage(re, Info, None,
+                  "Successful to preload texture image file <TIPM>:<" + path + ">, TIPM Alias is:<" + alias + ">");
             }
             else {
                MRI_SetMessage(re, Warring, FileSystemI0Fail,

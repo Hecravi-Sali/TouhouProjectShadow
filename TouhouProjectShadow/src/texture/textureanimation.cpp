@@ -2,7 +2,7 @@
 
 namespace TouhouProjectShadow {
 class TextureAnimation::Impl {
-public:
+private:
    TMI::Handle TMIH;
    /*
     * Renderable Entity Animation Execute Slot Map
@@ -20,7 +20,7 @@ public:
    } ER;
    RWMUTEX _UICER_lock;
    std::map<AEM, std::shared_ptr<executerecord>> _UICER;
-
+public:
    Impl(TMI::Handle& handle) {
       TMIH = handle;
    }
@@ -114,19 +114,30 @@ public:
       };
       while (IteratorFinished()) {
          auto ptr = (*iterator).second;
+         auto AnimationFinished = [&](void) -> bool {
+            bool animationstatus = false;
+            if (ptr->consumedtime > ptr->animationsequence.duration) {
+               animationstatus = true;
+               MRI_PushMessageInQueue_Creat(re, Info, None,
+                  "Animation sequence of UIC:" +
+                  (*iterator).first.to_string() + "is finished");
+            }
+            if (TMIH->Get((*iterator).first.uic).coordmap.size() == 0) {
+               animationstatus = true;
+               MRI_PushMessageInQueue_Creat(re, Debug, ExecutionConditionsDestroyed,
+                  "UIC:" + (*iterator).first.to_string() +
+                  "in TextureManager is not presence, Maybe renderable entity not config or destoryed");
+            }
+            if (animationstatus) {
+               SYNCBLOCK_RW_UNIQUELOCK(_UICER_lock);
+               iterator = _UICER.erase(iterator);
+            }
+            return animationstatus;
+         };
          {
             SYNCBLOCK_LOCK(ptr->record_lock);
             ptr->consumedtime += timeinterval;
-            if (ptr->consumedtime > ptr->animationsequence.duration) {
-               MRI_PushMessageInQueue_Creat(re, Info, None,
-                  "Animation sequence of UIC:" + 
-                  (*iterator).first.to_string() + "is finished");
-               {
-                  SYNCBLOCK_RW_UNIQUELOCK(_UICER_lock);
-                  iterator = _UICER.erase(iterator);
-               }
-            }
-            else {
+            if (!AnimationFinished()) {
                switch (ptr->animationsequence.animationsequencetype) {
                   case AS::AST::Frame: {
                      if (ptr->animationsequence.TCaliasSequence.size() != 0 &&

@@ -162,6 +162,7 @@
     <ClInclude Include="include\physicaleffect\physicaleffect_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitycontrol_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitydraw_intfc.hpp" />
+    <ClInclude Include="include\renderableentity\renderableentityfree.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitygenerate_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentitymanager_intfc.hpp" />
     <ClInclude Include="include\renderableentity\renderableentity_intfc.hpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="include\usercontrolinterface\usercontrolkeyboard_intfc.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\renderableentity\renderableentityfree.cpp" />
     <ClCompile Include="src\texture\textureanimation.cpp" />
     <ClCompile Include="src\texture\texturemanager.cpp" />
   </ItemGroup>

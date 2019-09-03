@@ -119,7 +119,6 @@ public:
    MAKE_ENUMCLASS(MessageReportCode, MRC,
       None, UnabletoLocate, FileSystemI0Fail, ParametersUnReasonable,
       ExecutionConditionsDestroyed, ImproperCallSequence);
-
 protected:
    /*
     * 消息的实例化结构
@@ -131,25 +130,25 @@ protected:
       std::string info;
    };
    typedef std::queue<_Message> _Messagequeue;
+} MRI;
 
-public:
 #ifndef MRI_CLOSEMESSAGE
-#define MRI_Message MessageReport_intfc::_Message __cdecl
+#define MRI_Message MRI::_Message __cdecl
 #else
 #define MRI_Message void __cdecl
 #endif
 
 #ifndef MRI_CLOSEMESSAGE
-#define MRI_Messagequeue MessageReport_intfc::_Messagequeue __cdecl
+#define MRI_Messagequeue MRI::_Messagequeue __cdecl
 #else
 #define MRI_Messagequeue void __cdecl
 #endif
 
 #ifndef MRI_CLOSEMESSAGE
 #define MRI_CreatMessage(message) \
-        MessageReport_intfc::_Message message = { \
-            MessageReport_intfc::MRG::Error, \
-            MessageReport_intfc::MRC::UnabletoLocate , \
+        MRI::_Message message = { \
+            MRI::MRG::Error, \
+            MRI::MRC::UnabletoLocate , \
             "" };
 #else
 #define MRI_CreatMessage(message) 
@@ -157,7 +156,7 @@ public:
 
 #ifndef MRI_CLOSEMESSAGE
 #define MRI_CreatMessageQueue(message) \
-        MessageReport_intfc::_Messagequeue message;
+        MRI::_Messagequeue message;
 #else
 #define MRI_CreatMessageQueue(message)
 #endif
@@ -171,8 +170,8 @@ public:
 
 #ifndef MRI_CLOSEMESSAGE
 #define MRI_SetMessage(message, grade, code, ...) message = { \
-        MessageReport_intfc::MRG::grade, \
-        MessageReport_intfc::MRC::code, \
+        MRI::MRG::grade, \
+        MRI::MRC::code, \
         ## __VA_ARGS__};
 #else
 #define MRI_SetMessage(message, grade, code)
@@ -189,8 +188,8 @@ public:
 #ifndef MRI_CLOSEMESSAGE
 #define MRI_PushMessageInQueue_Creat(stack, grade, code, str) \
         stack.push({ \
-            MessageReport_intfc::MRG::grade, \
-            MessageReport_intfc::MRC::code, \
+            MRI::MRG::grade, \
+            MRI::MRC::code, \
             (str)});
 #else
 #define MRI_PushMessageInQueue_Creat(stack, grade, code, str)
@@ -222,6 +221,6 @@ public:
 #define MRI_Retrun_RV(message) \
         message;
 #endif
-} MRI;
+
 }
 #endif // !TPS_MESSAGEREPORTINTFC

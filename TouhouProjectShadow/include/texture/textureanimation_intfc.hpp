@@ -23,11 +23,11 @@ namespace TouhouProjectShadow {
       typedef std::shared_ptr<TextureAnimation_intfc> Handle;
 
       typedef struct RenderableEntityExecutionSlot {
-         REMI::REGMP::REC renderableentitycamp;
-         MAKE_ENUMCLASS(ExecuteSlotType, ELT,
+         REMI::REGMP::REC renderableentitycamp = REMI::REGMP::REC::Noinitial;
+         MAKE_ENUMCLASS(ExecuteSlotType, ELT, Noinitial,
             Creat, Running, Destory,
             Expansion0, Expansion1, Expansion2, Expansion3);
-         ELT executionslottype;
+         ELT executionslottype = ELT::Noinitial;
 
          bool operator<(RenderableEntityExecutionSlot const& r) const {
             return 
@@ -51,14 +51,14 @@ namespace TouhouProjectShadow {
        *    m>, REDI接口提供的绘图功能将根据缩放等级渲染。
        */
       typedef struct AnimationSequence {
-         MAKE_ENUMCLASS(AnimationSequenceType, AST,
+         MAKE_ENUMCLASS(AnimationSequenceType, AST, Noinitial,
             Frame, Translation, Zoom);
-         AST animationsequencetype;
-         /*
-          * 动画执行时长
-          * 是指整个动画执行需要多少时间，单位(s)，
-          */
-         float duration;
+         AST animationsequencetype = AST::Noinitial;
+            /*
+             * 动画执行时长
+             * 是指整个动画执行需要多少时间，单位(s)，
+             */
+            float duration = 0.0;
          /*
           * 通过<预加载贴图坐标信息>的别名获取<TIalias>和<coordmap>并替换UIC所指
           *    向的<贴图坐标映射>实现帧序列动画。

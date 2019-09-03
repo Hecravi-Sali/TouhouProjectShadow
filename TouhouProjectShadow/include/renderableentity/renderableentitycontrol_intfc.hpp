@@ -2,6 +2,7 @@
 #ifndef TPS_RENDERABLEENTITYCONTROLINTFC
 #define TPS_RENDERABLEENTITYCONTROLINTFC
 
+#include "../messagereport/messagereport_intfc.hpp"
 #include "../generalpurposetype/generalpurposetype.hpp"
 
 namespace TouhouProjectShadow {
@@ -11,7 +12,7 @@ namespace TouhouProjectShadow {
     *
     * 该类是可重入的，在方法内部实现了同步方法，外部调用者不需要做额外的同步操作。
     */
-   typedef class RenderableEntityControl_intfc {
+   typedef class RenderableEntityControl_intfc : virtual public MRI {
    protected:
       virtual ~RenderableEntityControl_intfc(void) = default;
    public:
@@ -29,14 +30,8 @@ namespace TouhouProjectShadow {
       struct Attributes {
          Vec2f position;
          Vec2f speed;
-         float collisionrange;
-         std::string TCalias;
-         Attributes(void) {
-            position = 0.0;
-            speed = 0.0;
-            collisionrange = 0.0;
-            TCalias = "";
-         }
+         float collisionrange = static_cast<float>(0.0);
+         std::string TCalias = "";
       };
       /*
       * Feature：
@@ -53,7 +48,7 @@ namespace TouhouProjectShadow {
           配置操作 行为是立即生效的。
           输入不允许空指针
       */
-      virtual void Config(Attributes const&) = 0;
+      virtual MRI_Message Config(Attributes const&) = 0;
       /*
       * Feature：
           获得@REI在当前帧的世界坐标，该坐标也是圆形判定盒的圆心。 
@@ -101,7 +96,6 @@ namespace TouhouProjectShadow {
       virtual void IncrementChangeSpeed(Vec2f const&) = 0;
       virtual float GetCollisionRange(void) const = 0;
       virtual void SetCollisionRange(float const&) = 0;
-      virtual std::string GetTCalias(void) const = 0;
       virtual UIC const GetUIC(void) const = 0;
    } RECI;
 }

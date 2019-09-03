@@ -19,15 +19,13 @@ namespace TouhouProjectShadow {
 
       typedef struct RenderableEntityGroupMarkPair {
          //  The actual type difference of the entity (stable).
-         MAKE_ENUMCLASS(RenderableEntityType, RET, Free, PathTracking, unknow);
+         MAKE_ENUMCLASS(RenderableEntityType, RET, Noinitial,
+            Free, PathTracking);
          //  Used to distinguish between different entity logic types (User decision).
-         MAKE_ENUMCLASS(RenderableEntityCamp, REC, camp0, camp1, unknow);
-         RenderableEntityGroupMarkPair(void) {
-            ret = RET::unknow;
-            rec = REC::unknow;
-         }
-         RET ret;
-         REC rec;
+         MAKE_ENUMCLASS(RenderableEntityCamp, REC, Noinitial,
+            camp0, camp1);
+         RET ret = RET::Noinitial;
+         REC rec = REC::Noinitial;
          inline std::string const toString(
             RenderableEntityGroupMarkPair const &egmp) const {
             return egmp.EnumtoString(ret) + ", " + egmp.EnumtoString(rec);

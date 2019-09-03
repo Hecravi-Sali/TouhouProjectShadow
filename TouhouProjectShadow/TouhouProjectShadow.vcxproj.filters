@@ -40,6 +40,9 @@
     <Filter Include="src\texture">
       <UniqueIdentifier>{dff7e19d-e0e9-4ad5-95ff-892515c49255}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\renderableentity">
+      <UniqueIdentifier>{8da140f7-75f6-47af-896b-292b3c997ccd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\messagereport\messagereport_intfc.hpp">
@@ -90,6 +93,9 @@
     <ClInclude Include="include\texture\textureanimation.hpp">
       <Filter>include\texture</Filter>
     </ClInclude>
+    <ClInclude Include="include\renderableentity\renderableentityfree.hpp">
+      <Filter>include\renderableentity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\texture\texturemanager.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="src\texture\textureanimation.cpp">
       <Filter>src\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderableentity\renderableentityfree.cpp">
+      <Filter>src\renderableentity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
