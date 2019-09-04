@@ -96,7 +96,7 @@ namespace TouhouProjectShadow {
       virtual void IncrementChangeSpeed(Vec2f const&) = 0;
       virtual float GetCollisionRange(void) const = 0;
       virtual void SetCollisionRange(float const&) = 0;
-      virtual UIC const GetUIC(void) const = 0;
+      virtual UIC GetUIC(void) const = 0;
    } RECI;
 }
 #endif // !TPS_RENDERABLEENTITYCONTROLINTFC

@@ -6,7 +6,7 @@
 #include "renderableentity_intfc.hpp"
 
 namespace TouhouProjectShadow {
-typedef class RenderableEntityFree : public REI {
+class RenderableEntityFree : public REI {
 public:
    RenderableEntityFree(UIC&, TMI::Handle&, std::shared_ptr<UNIQUEMUTEX>);
    RenderableEntityFree(RenderableEntityFree const&) = delete;
@@ -23,9 +23,9 @@ public:
    virtual void IncrementChangeSpeed(Vec2f const&) override;
    virtual float GetCollisionRange(void) const override;
    virtual void SetCollisionRange(float const&) override;
-   virtual UIC const GetUIC(void) const override;
+   virtual UIC GetUIC(void) const override;
 
-   virtual MRI_Message Draw(void) override;
+   virtual MRI_Message Draw(void) const override;
    virtual void Update(float const& timeinterval) override;
 private:
    class Impl;

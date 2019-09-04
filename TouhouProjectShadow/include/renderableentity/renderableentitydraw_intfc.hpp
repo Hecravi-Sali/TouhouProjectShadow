@@ -18,7 +18,7 @@ namespace TouhouProjectShadow {
       virtual ~RenderableEntityDraw_intfc(void) = default;
       typedef std::shared_ptr<RenderableEntityDraw_intfc> REDIHandle;
 
-      virtual MRI_Message Draw(void) = 0;
+      virtual MRI_Message Draw(void) const = 0;
       virtual void Update(float const& timeinterval) = 0;
    } REDI;
 }

@@ -53,6 +53,11 @@ public:
       return TwoDimensionalVectorofFloatingPointType(
          x * Magnification, y * Magnification);
    }
+   TwoDimensionalVectorofFloatingPointType operator*(
+      TwoDimensionalVectorofFloatingPointType const& r) const {
+      return TwoDimensionalVectorofFloatingPointType(
+         x * r.x, y * r.y);
+   }
    void operator*=(float const& Magnification) {
       x *= Magnification;
       y *= Magnification;
@@ -79,13 +84,13 @@ protected:
    }
 public:
    UniqueIdentificationCode(
-      UniqueIdentificationCode const& uic)
-      : _id(uic._id), _error(uic._error) {
+         UniqueIdentificationCode const& r)
+         : _id(r._id), _error(r._error) {
       ;
    }
    ~UniqueIdentificationCode(void) = default;
-   bool operator==(UniqueIdentificationCode const& uic) const {
-      return _id == uic._id && !(_error || uic._error);
+   bool operator==(UniqueIdentificationCode const& r) const {
+      return _id == r._id && !(_error || r._error);
    }
    bool operator<(UniqueIdentificationCode const& uic) const {
       return _id < uic._id && !(_error || uic._error);
@@ -98,7 +103,7 @@ public:
    }
    static UniqueIdentificationCode GetUIC(void) {
       static std::mutex _lockground;
-      static uint32_t _idcounter = 0;
+      static uint32_t _idcounter = 1;
       std::lock_guard<std::mutex> lock(_lockground);
       if (_idcounter < UINT32_MAX) {
          return UIC(_idcounter++, false);
@@ -108,18 +113,18 @@ public:
       }
    }
 private:
-   const bool _error;
-   const uint32_t _id;
+   const bool _error = true;
+   const uint32_t _id = 0;
 } UIC;
 
 #define RWMUTEX std::shared_mutex
-#define SYNCBLOCK_RW_SHAREDLOCK(mutexname) \
-   std::shared_lock<std::shared_mutex> _rw_shardlock(mutexname);
-#define SYNCBLOCK_RW_UNIQUELOCK(mutexname) \
-   std::unique_lock<std::shared_mutex> _rw_uniquelock(mutexname);
+#define SYNCBLOCK_RW_SHAREDLOCK(mutexname, ...) \
+   std::shared_lock<std::shared_mutex> _##__VA_ARGS__##_shardlocked(mutexname);
+#define SYNCBLOCK_RW_UNIQUELOCK(mutexname, ...) \
+   std::unique_lock<std::shared_mutex> _##__VA_ARGS__##_uniquelocked(mutexname);
 #define UNIQUEMUTEX std::mutex
-#define SYNCBLOCK_LOCK(mutexname) \
-   std::lock_guard<std::mutex> _uniquelock(mutexname);
+#define SYNCBLOCK_LOCK(mutexname, ...) \
+   std::lock_guard<std::mutex> _##__VA_ARGS__##uniquelocked(mutexname);
 
 #define EXPANSIONIMPL_1_CONST(classname, returnvaluetype, functionname, parameter0) \
    returnvaluetype classname::functionname(parameter0 temp0) const { \
@@ -129,6 +134,11 @@ private:
 #define EXPANSIONIMPL_2_CONST(classname, returnvaluetype, functionname, parameter0, parameter1) \
    returnvaluetype classname::functionname(parameter0 temp0, parameter1 temp1) const { \
       MRI_Retrun_RV(pImpl->functionname(temp0, temp1)) \
+   }
+
+#define EXPANSIONIMPL_0_CONST(classname, returnvaluetype, functionname) \
+   returnvaluetype classname::functionname(void) const { \
+      MRI_Retrun_RV(pImpl->functionname()) \
    }
 
 #define EXPANSIONIMPL_1(classname, returnvaluetype, functionname, parameter0) \
